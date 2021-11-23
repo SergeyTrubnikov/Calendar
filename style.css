@@ -1,0 +1,14 @@
+.calendarTable, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.calendarHeader th {
+    color: white;
+    background-color: rgb(214, 123, 123);
+}
+
+.calendarControl td {
+    column-span: 5;
+}
