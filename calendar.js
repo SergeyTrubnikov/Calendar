@@ -20,6 +20,8 @@ const MONTHS = [
 
 
 let date = new Date();
+let today = new Date();
+let convertedToday = `${today.getFullYear()} ${today.getMonth()} ${today.getDate()}`;
 
 function minusMonth() {
     date.setMonth(date.getMonth() - 1);
@@ -67,9 +69,9 @@ function decolourAllCells(color) {
 }
 
 function isToday(dayToFill) {
-    let today = new Date();
+    // let today = new Date();
     let convertedDay = `${dayToFill.getFullYear()} ${dayToFill.getMonth()} ${dayToFill.getDate()}`;
-    let convertedToday = `${today.getFullYear()} ${today.getMonth()} ${today.getDate()}`;
+    // let convertedToday = `${today.getFullYear()} ${today.getMonth()} ${today.getDate()}`;
 
     return convertedDay === convertedToday;
 }
