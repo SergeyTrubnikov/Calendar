@@ -2,98 +2,81 @@
 <html>
     <head>
         <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
         
     </head>
 
     
     <body>
-        
-        <div >
-        <table id="calendar" class="calendarTable" align="center">
-            <tr>
-                <td id="monthAndYear" colspan="5"></td>
-                <td>
-                    <button onclick="minusMonth()">prev</button>
-                </td>
-                <td>
-                    <button onclick="plusMonth()">next</button>
-                </td>
-            </tr>
-
-            <tr class="calendarHeader">
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-                <th>Sun</th>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-        </table>
-       
+        <div class="calendar">
+        <div class="calendarControl">
+            <div class="calendarMonthAndYear"></div>
+            <div class="calendarPrevMonthControl" onclick="minusMonth()"><</div>
+            <div class="calendarNextMonthControl" onclick="plusMonth()">></div>
         </div>
+
+        <div class="calendarBody">           
+            <div class="calendarHeader">Mon</div>
+            <div class="calendarHeader">Tue</div>
+            <div class="calendarHeader">Wed</div>
+            <div class="calendarHeader">Thu</div>
+            <div class="calendarHeader">Fri</div>
+            <div class="calendarHeader">Sat</div>
+            <div class="calendarHeader">Sun</div>
+
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+            <div class="calendarDay"></div>
+        </div>
+    </div>
+
+
        
+    </body>       
         <script src="calendar.js"></script>
     </body>
 </html>

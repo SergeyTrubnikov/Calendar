@@ -34,7 +34,6 @@ function plusMonth() {
 }
 
 
-
 function getStartOfCalendar(date) {
     let startOfMonth = date.setDate(firstDayOfMonth); // Getting date object with first day of month
     let firstDayOfWeekInMonth = new Date(startOfMonth).getDay(); // Getting first day of week in month
@@ -58,20 +57,17 @@ function fillCell(cell, text) {
     cell.innerHTML = text;
 }
 
-function decolourAllCells(color) {
-    let calendar = document.getElementById("calendar");
-    for (let row of Array.from(calendar.rows).slice(2)) {
-        for (let cell of row.cells) {
-                cell.bgColor = color;
-        }
+function defaultAllCells() {
+    let calendar = document.querySelectorAll("div[class*='Day']");
+    for (let day of Array.from(calendar)) {
+        day.className = "calendarDay";
+        day.onclick = () => {};
     }
 
 }
 
 function isToday(dayToFill) {
-    // let today = new Date();
     let convertedDay = `${dayToFill.getFullYear()} ${dayToFill.getMonth()} ${dayToFill.getDate()}`;
-    // let convertedToday = `${today.getFullYear()} ${today.getMonth()} ${today.getDate()}`;
 
     return convertedDay === convertedToday;
 }
@@ -79,30 +75,45 @@ function isToday(dayToFill) {
 
 
 function fillCalendar(date) {
-    decolourAllCells("white");
+    defaultAllCells();
 
     let dayToFill = getStartOfCalendar(date);
 
-    let calendar = document.getElementById("calendar");
+    let calendar = document.querySelectorAll("div[class*='Day']");
     
-    let monthAndYear = document.getElementById("monthAndYear");
+    let monthAndYear = document.getElementsByClassName("calendarMonthAndYear");
 
-    monthAndYear.innerHTML = `<b>${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+    monthAndYear[0].innerHTML = `${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 
-    for (let row of Array.from(calendar.rows).slice(2)) {
-        for (let cell of row.cells) {
-            if (isToday(dayToFill)) {
-                cell.bgColor = "green";
-            } 
-
-            if (date.getMonth() != dayToFill.getMonth()) {
-                cell.bgColor = "gray";
-            } 
-
-            fillCell(cell, dayToFill.getDate());
-            dayToFill.setDate(dayToFill.getDate() + 1);
+    for (let day of Array.from(calendar)) {
+        if (isToday(dayToFill)) {
+            day.className = "calendarToDay";
+            day.onclick = () => {};
+        } else if (dayToFill.getMonth() < date.getMonth()) {
+            if (dayToFill.getTime() < date.getTime()) {
+                day.className = "calendarPrevMonthDay";
+                day.onclick = minusMonth;
+            } else {
+                day.className = "calendarNextMonthDay";
+                day.onclick = plusMonth;
+            }
+        } else if (dayToFill.getMonth() > date.getMonth()) {
+            if (dayToFill.getTime() > date.getTime()) {
+                day.className = "calendarNextMonthDay";
+                day.onclick = plusMonth;
+            } else {
+                day.className = "calendarPrevMonthDay";
+                day.onclick = minusMonth;
+            }
+        } else {
+            day.className = "calendarDay";
+            day.onclick = () => {};
         }
+
+        fillCell(day, dayToFill.getDate());
+        dayToFill.setDate(dayToFill.getDate() + 1);
     }
+
 }
 
 
