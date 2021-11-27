@@ -18,19 +18,33 @@ const MONTHS = [
     "December",
 ]
 
+let today = new Date(); // Getting today date
+let date; // Define global date variable
 
-let date = new Date();
-let today = new Date();
+if (sessionStorage.getItem('localDate')) {
+    date = new Date(Date.parse(sessionStorage.getItem('localDate')));
+} else {
+    date = new Date();
+}
+
+
+
 let convertedToday = `${today.getFullYear()} ${today.getMonth()} ${today.getDate()}`;
+
+function saveDate(date) {
+    sessionStorage.setItem('localDate', date);
+}
 
 function minusMonth() {
     date.setMonth(date.getMonth() - 1);
+    saveDate(date);
     fillCalendar(date);
 }
 
 function plusMonth() {
     date.setMonth(date.getMonth() + 1);
     fillCalendar(date);
+    saveDate(date);
 }
 
 
