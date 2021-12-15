@@ -1,0 +1,55 @@
+.note-context-menu-container {
+   display: grid;
+   width: 150px;
+   height: 100px;
+   grid-template-columns: 3fr;
+   position: absolute ;
+   background-color: rgb(97, 97, 97);
+   border: 2px solid rgba(214, 185, 20, 0.938);
+   border-radius: 5px;
+   color: rgb(245, 244, 241);
+   z-index: 10;
+   cursor: default;
+}
+
+.noHover {
+    pointer-events: none;
+}
+
+.note-input {
+    z-index: 11;
+    background-color: rgb(240, 233, 233);
+    border: 2px solid rgb(255, 255, 255);
+    color: rgb(39, 39, 39);
+    width: 140px;
+    height: 40px; 
+    border-radius: 5px;
+    font-size: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    resize: none;
+}
+
+.note-save-button, .note-discard-button {
+    bottom: 0;
+    right: 0;
+    /* background-color: rgb(97, 97, 97);
+    border: 2px solid rgb(246, 160, 0);
+    border-radius: 5px;
+    color: rgb(245, 244, 241); */
+    width: 50px;
+    height: 20px;
+    font-size: 10px;
+    z-index: 12;
+}
+
+.note-circle {
+    width: 5px;
+    height: 5px;
+    background-color: rgba(214, 185, 20, 0.938) !important;
+    border-radius: 50%;
+    display: inline-block;
+    z-index: 9;
+    position: absolute;
+
+}

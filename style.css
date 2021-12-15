@@ -9,9 +9,7 @@
 
 .calendarControl {
     display: grid;
-    /* background-color: #3f3f42; */
     grid-template-columns: repeat(7, 1fr);
-    /* border: 1px solid #3f3f42; */
     color: white;
     width: 300px;
     text-align: center;
@@ -34,9 +32,7 @@
 
 .calendarBody {
     display: grid;
-    /* background-color: #3f3f42; */
     grid-template-columns: repeat(7, 1fr);
-    /* border: 1px solid #3f3f42; */
     color: white;
     width: 300px;
     text-align: center;
@@ -64,6 +60,7 @@ div[class*="Day"] {
     padding: 3px;
     font-size: 12px;
     font-family: 'Comis Sans MS', cursive;
+    position: relative;
 }
 
 div[class*="Day"]:hover {
@@ -78,12 +75,24 @@ div[class*="MonthControl"]:hover {
     color: rgba(214, 185, 20, 0.938);
 }
 
+
 .calendarDay {
     background-color: #3f3f42;
 }
 
-.calendarToDay {
-    background-color: #2e5f97; 
+.calendarChoosenDay {
+    border: 2px solid #629bdd !important;
+    border-radius: 5px;
+} 
+
+
+.calendarToDay, .calendarChoosenToDay {
+    background-color: #2e9789;
+    border-radius: 5px; 
+}
+
+.calendarChoosenToDay {
+    border: 2px solid #629bdd !important;
 }
 
 .calendarPrevMonthDay {

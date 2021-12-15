@@ -18,9 +18,20 @@ const MONTHS = [
     "December",
 ]
 
+
 let today = new Date(); // Getting today date
 let date; // Define global date variable
+let notes; // Define global notes variable
 
+/*Define notes object*/
+if (localStorage.getItem('notes')) {
+    notes = JSON.parse(localStorage.getItem('notes'));
+} else {
+    localStorage.setItem('notes', '{}');
+    notes = JSON.parse(localStorage.getItem('notes'));
+}
+
+/*Define date object*/
 if (sessionStorage.getItem('localDate')) {
     date = new Date(Date.parse(sessionStorage.getItem('localDate')));
 } else {
@@ -31,23 +42,52 @@ if (sessionStorage.getItem('localDate')) {
 
 let convertedToday = `${today.getFullYear()} ${today.getMonth()} ${today.getDate()}`;
 
+// Function for generating unqiue key for each current month date cell 
+function genKey(date) {
+    if (date.getMonth().toString().length == 1) {
+        return `${date.getFullYear()}0${date.getMonth()}${date.getDate()}`;
+    } else {
+        return `${date.getFullYear()}${date.getMonth()}${date.getDate()}`;
+    }
+    
+}
+
+// Function for loading notes from local storage
+function loadNotesObject() {
+    return JSON.parse(localStorage.getItem('notes'));
+}
+
+// Function for saving notes to local storage
+function saveNotesObject(notes) {
+    localStorage.setItem('notes', JSON.stringify(notes));
+}
+
+// Function for checking that the note exists
+function checkNote(id) {
+    let notes = loadNotesObject();
+    return notes[id] ? true : false;
+}
+
+// Function for saving date to session storage
 function saveDate(date) {
     sessionStorage.setItem('localDate', date);
 }
 
+// Function for decrementing month value
 function minusMonth() {
     date.setMonth(date.getMonth() - 1);
     saveDate(date);
     fillCalendar(date);
 }
 
+// Function for incrementing month value
 function plusMonth() {
     date.setMonth(date.getMonth() + 1);
     fillCalendar(date);
     saveDate(date);
 }
 
-
+// Function for getting calendar start date
 function getStartOfCalendar(date) {
     let startOfMonth = date.setDate(firstDayOfMonth); // Getting date object with first day of month
     let firstDayOfWeekInMonth = new Date(startOfMonth).getDay(); // Getting first day of week in month
@@ -61,24 +101,83 @@ function getStartOfCalendar(date) {
     } else {
         initialCalendarDay = new Date(startOfMonth);
     }
-    
 
     return initialCalendarDay;
 }
 
-
+// Function for filling cells
 function fillCell(cell, text) {
-    cell.innerHTML = text;
+    if (checkNote(cell.id)) {
+        cell.innerHTML = `${text} 
+        <div class='note-circle'></div>`;
+    } else {
+        cell.innerHTML = text;
+    }
+ 
 }
 
+// Function for clearing all cells to default class
 function defaultAllCells() {
     let calendar = document.querySelectorAll("div[class*='Day']");
     for (let day of Array.from(calendar)) {
         day.className = "calendarDay";
         day.onclick = () => {};
     }
-
 }
+
+// Function for removing date selection border
+function removeDateSelection() {
+    let calendar = document.querySelectorAll("div[class*='Choosen']");
+    for (let day of Array.from(calendar)) {
+        if (day.className == "calendarChoosenToDay") {
+            day.className = "calendarToDay";
+        } else {
+            day.className = "calendarDay";
+        }
+    }
+}
+
+function highlightDay() {
+    removeContextMenu();
+    removeDateSelection();
+    if (this.className == "calendarToDay") {
+        this.className = "calendarChoosenToDay";
+    } else {
+        this.className = "calendarChoosenDay";
+    }    
+}
+
+// Function to find specified parent element
+function getParentByClass(element, className) {
+    let finalParent = element.closest(`.${className}`);
+    return finalParent;
+}
+
+// Function for adding note
+function addNote(element) {
+    let notes = loadNotesObject();
+    let noteText = document.getElementById('note-text').value;
+    let cellId = getParentByClass(element, "calendarDay").id;
+    if (noteText) {
+        if (Array.isArray(notes[cellId])) {
+            notes[cellId].push(noteText);
+        } else {
+            notes[cellId] = [];
+            notes[cellId].push(noteText);
+        }
+        saveNotesObject(notes);
+        fillCalendar(date);
+    } else {
+        alert("Note can't be empty!");
+    }
+}
+
+// Function for clearing note's text in a form
+function discardNote() {
+    document.getElementById('note-text').value = "";
+}
+
+
 
 function isToday(dayToFill) {
     let convertedDay = `${dayToFill.getFullYear()} ${dayToFill.getMonth()} ${dayToFill.getDate()}`;
@@ -86,6 +185,29 @@ function isToday(dayToFill) {
     return convertedDay === convertedToday;
 }
 
+
+function insertContextMenu(event) {
+    removeContextMenu();
+    this.innerHTML += `<div id="addnote" class="note-context-menu-container">
+        <div>Add note</div>
+        <div><textarea id="note-text" class="note-input" placeholder="Type your note here..."></textarea></div>
+        <div>
+            <button class="note-save-button" onclick="addNote(this)">add</button>
+            <button class="note-discard-button" onclick="discardNote()">discard</button>
+        </div>
+    </div>`;
+
+    let noteWindow = document.getElementById('addnote');
+    noteWindow.addEventListener('click', (event) => { event.preventDefault(), event.stopPropagation()});
+    event.preventDefault()
+    return false;
+}
+
+function removeContextMenu() {
+    if (document.getElementById('addnote')) {
+        document.getElementById('addnote').remove();
+    };
+}
 
 
 function fillCalendar(date) {
@@ -102,7 +224,8 @@ function fillCalendar(date) {
     for (let day of Array.from(calendar)) {
         if (isToday(dayToFill)) {
             day.className = "calendarToDay";
-            day.onclick = () => {};
+            day.onclick = highlightDay;
+            day.id = genKey(dayToFill);
         } else if (dayToFill.getMonth() < date.getMonth()) {
             if (dayToFill.getTime() < date.getTime()) {
                 day.className = "calendarPrevMonthDay";
@@ -121,7 +244,9 @@ function fillCalendar(date) {
             }
         } else {
             day.className = "calendarDay";
-            day.onclick = () => {};
+            day.onclick = highlightDay;
+            day.id = genKey(dayToFill);
+            day.addEventListener('contextmenu', insertContextMenu);
         }
 
         fillCell(day, dayToFill.getDate());
