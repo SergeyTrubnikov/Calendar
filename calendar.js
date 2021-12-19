@@ -157,13 +157,27 @@ function getParentByClass(element, className) {
 function addNote(element) {
     let notes = loadNotesObject();
     let noteText = document.getElementById('note-text').value;
-    let cellId = getParentByClass(element, "calendarDay").id;
+    let cellId;
+    if (getParentByClass(element, 'calendarDay')) {
+        cellId = getParentByClass(element, 'calendarDay').id;
+    } else if (getParentByClass(element, 'calendarChoosenDay')) {
+        cellId = getParentByClass(element, 'calendarChoosenDay').id;
+    } else if (getParentByClass(element, 'calendarToDay')) {
+        cellId = getParentByClass(element, 'calendarToDay').id;
+    } else {
+        cellId = getParentByClass(element, 'calendarChoosenToDay').id;
+    }
+
     if (noteText) {
-        if (Array.isArray(notes[cellId])) {
-            notes[cellId].push(noteText);
+        if (notes[cellId]) {
+            if (notes[cellId][noteText]) {
+                alert("Such note already exists!");
+            } else {
+                notes[cellId][noteText] = noteText;
+            }
         } else {
-            notes[cellId] = [];
-            notes[cellId].push(noteText);
+            notes[cellId] = {};
+            notes[cellId][noteText] = noteText;
         }
         saveNotesObject(notes);
         fillCalendar(date);
@@ -178,16 +192,17 @@ function discardNote() {
 }
 
 
-
+// Function to check if date is today
 function isToday(dayToFill) {
     let convertedDay = `${dayToFill.getFullYear()} ${dayToFill.getMonth()} ${dayToFill.getDate()}`;
 
     return convertedDay === convertedToday;
 }
 
-
+// Function for inserting context memu by mouse right-click
 function insertContextMenu(event) {
     removeContextMenu();
+    removeNotesList();
     this.innerHTML += `<div id="addnote" class="note-context-menu-container">
         <div>Add note</div>
         <div><textarea id="note-text" class="note-input" placeholder="Type your note here..."></textarea></div>
@@ -203,13 +218,87 @@ function insertContextMenu(event) {
     return false;
 }
 
+// Function for removing context menu
 function removeContextMenu() {
     if (document.getElementById('addnote')) {
         document.getElementById('addnote').remove();
     };
 }
 
+// Function for checking if date contains notes
+function hasNotes(notes, cellId) {
+    return notes[cellId];
+}
 
+// Function for removing selected note
+function removeNote(note) {
+    let noteToRemove = getParentByClass(note, "note");
+    let noteText = note.nextElementSibling.textContent;
+    let cellId;
+
+    if (getParentByClass(note, 'calendarChoosenDay')) {
+        cellId = getParentByClass(note, "calendarChoosenDay").id;
+    } else {
+        cellId = getParentByClass(note, "calendarChoosenToDay").id;
+    }
+    notes = loadNotesObject();
+    delete notes[cellId][noteText];
+
+    if (!Object.getOwnPropertyNames(notes[cellId]).length) {
+        delete notes[cellId];
+    }
+
+    noteToRemove.remove();
+    saveNotesObject(notes);
+
+    fillCalendar(date);
+}
+
+// Function for invoking list of notes for selected date
+function insertNotesList(event) {
+    removeContextMenu();
+    removeNotesList();
+    let notes = loadNotesObject();
+    let cellId = this.id;
+    
+    if (hasNotes(notes, cellId)) {
+        let notesList = document.createElement('div');
+        notesList.id = "notes-list";
+        notesList.style.gridTemplateRows = `repeat(${Object.getOwnPropertyNames(notes[cellId]).length}, 20px)`;
+        notesList.className = "notes-list";
+
+        for (let note in notes[cellId]) {
+            // let noteFinal;
+
+            // if (note.length > 20) {
+            //     noteFinal = note.slice(0,15) + "...";
+            // } else {
+            //     noteFinal = note;
+            // }
+
+            notesList.innerHTML += 
+            `
+            <div class="note">
+                <div class="note-remove" onclick="removeNote(this)">X</div>
+                <div class="note-content">${note}</div>
+            </div>
+            `;
+        }
+
+        this.append(notesList);
+        event.preventDefault();
+    }
+}
+
+// Function for removing notes list
+function removeNotesList() {
+    if (document.getElementById('notes-list')) {
+        document.getElementById('notes-list').remove();
+    };
+}
+
+
+// Function for filling calendar
 function fillCalendar(date) {
     defaultAllCells();
 
@@ -226,6 +315,8 @@ function fillCalendar(date) {
             day.className = "calendarToDay";
             day.onclick = highlightDay;
             day.id = genKey(dayToFill);
+            day.addEventListener('contextmenu', insertContextMenu);
+            day.addEventListener('click', insertNotesList);
         } else if (dayToFill.getMonth() < date.getMonth()) {
             if (dayToFill.getTime() < date.getTime()) {
                 day.className = "calendarPrevMonthDay";
@@ -247,6 +338,7 @@ function fillCalendar(date) {
             day.onclick = highlightDay;
             day.id = genKey(dayToFill);
             day.addEventListener('contextmenu', insertContextMenu);
+            day.addEventListener('click', insertNotesList);
         }
 
         fillCell(day, dayToFill.getDate());

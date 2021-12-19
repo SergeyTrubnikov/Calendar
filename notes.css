@@ -12,6 +12,71 @@
    cursor: default;
 }
 
+.notes-list {
+    display: grid;
+    width: 150px;
+    height: 100px;
+    position: absolute ;
+    background-color: rgb(97, 97, 97);
+    border: 2px solid rgba(238, 238, 238, 0.938);
+    border-radius: 5px;
+    color: rgb(245, 244, 241);
+    z-index: 10;
+    cursor: default;
+    overflow-y: scroll;
+    row-gap: 5px;
+ }
+
+ .note {
+    margin-left: 5px;
+    height: 20px;
+    background-color: rgb(97, 97, 97);
+    color: rgb(245, 244, 241);
+    border-bottom: 1px solid rgba(238, 238, 238, 0.938);
+    z-index: 10;
+    text-align: left;
+    font-size: 10px;
+    cursor: default;
+    overflow-wrap: break-word;
+ }
+
+ .note-remove {
+    display: inline-block;
+    margin-left: 5px;
+    height: 20px;
+    background-color: rgb(97, 97, 97);
+    color: rgb(255, 0, 0);
+    text-align: left;
+    font-size: 10px;
+    font-weight: bolder;
+    cursor: default;
+ }
+
+ .note-remove:hover {
+    cursor: pointer;
+ }
+
+ .note-content {
+    display: inline-block;
+    margin-left: 5px;
+    height: 20px;
+    background-color: rgb(97, 97, 97);
+    color: rgb(245, 244, 241);
+    z-index: 10;
+    text-align: left;
+    text-overflow: clip;
+    font-size: 10px;
+    cursor: default;
+ }
+
+.note:hover {
+    background-color: rgb(192, 189, 189);
+}
+
+.note:hover * {
+    background-color: rgb(192, 189, 189);
+}
+
 .noHover {
     pointer-events: none;
 }
