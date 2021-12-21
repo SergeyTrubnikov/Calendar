@@ -231,7 +231,8 @@ function hasNotes(notes, cellId) {
 }
 
 // Function for removing selected note
-function removeNote(note) {
+function removeNote(event) {
+    let note = event.currentTarget;
     let noteToRemove = getParentByClass(note, "note");
     let noteText = note.nextElementSibling.textContent;
     let cellId;
@@ -267,22 +268,27 @@ function insertNotesList(event) {
         notesList.style.gridTemplateRows = `repeat(${Object.getOwnPropertyNames(notes[cellId]).length}, 20px)`;
         notesList.className = "notes-list";
 
+        let notesMaxLength = Math.max(...(Object.getOwnPropertyNames(notes[cellId])).map(item => item.length));
+
         for (let note in notes[cellId]) {
-            // let noteFinal;
+            let noteSelf = document.createElement('div');
 
-            // if (note.length > 20) {
-            //     noteFinal = note.slice(0,15) + "...";
-            // } else {
-            //     noteFinal = note;
-            // }
+            noteSelf.className = "note";
+            noteSelf.style.width = `${notesMaxLength}em`;            
+            
+            let noteRemove = document.createElement('div');
+            noteRemove.className = "note-remove";
+            noteRemove.innerHTML = "X";
+            noteRemove.onclick = removeNote;
 
-            notesList.innerHTML += 
-            `
-            <div class="note">
-                <div class="note-remove" onclick="removeNote(this)">X</div>
-                <div class="note-content">${note}</div>
-            </div>
-            `;
+            let noteContent = document.createElement('div');
+            noteContent.className = "note-content";
+            noteContent.innerHTML = note;        
+
+            noteSelf.append(noteRemove);
+            noteSelf.append(noteContent);
+            notesList.append(noteSelf);
+
         }
 
         this.append(notesList);
@@ -296,7 +302,6 @@ function removeNotesList() {
         document.getElementById('notes-list').remove();
     };
 }
-
 
 // Function for filling calendar
 function fillCalendar(date) {

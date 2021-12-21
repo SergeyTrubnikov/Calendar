@@ -30,7 +30,6 @@
  .note {
     margin-left: 5px;
     height: 20px;
-    width: max-content;
     background-color: rgb(97, 97, 97);
     color: rgb(245, 244, 241);
     border-bottom: 1px solid rgba(238, 238, 238, 0.938);
