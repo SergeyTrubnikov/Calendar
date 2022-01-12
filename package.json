@@ -1,0 +1,24 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "description": "Web calendar application",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergeyTrubnikov/Calendar.git"
+  },
+  "author": "Sergey Trubnikov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergeyTrubnikov/Calendar/issues"
+  },
+  "homepage": "https://github.com/SergeyTrubnikov/Calendar#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
