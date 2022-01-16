@@ -1,15 +1,17 @@
 const express = require('express')
 const path = require('path')
+const fs = require('fs')
+const AppDAO = require('./dao.js')
+const Notes = require('./notes_tasks')
+const thenables = require('bluebird/js/release/thenables')
+
+
+const dbName = 'notes.db'
+const dbPath = path.join(__dirname, dbName)
 
 const app = express()
 const PORT = '5000'
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
-})
+const dao = new AppDAO(dbPath)
+const note_task = new Notes(dao)
 
-app.use(express.static(__dirname))
-
-app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`)
-})
