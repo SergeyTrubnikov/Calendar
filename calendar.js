@@ -1,6 +1,10 @@
+import { getNotes } from './notes_api.js'
+
 // calendar.js
 
 "use strict"
+
+
 
 const firstDayOfMonth = 1;
 const oneDay = 24 * 3600 * 1000;
@@ -40,7 +44,8 @@ let notes; // Define global notes variable
 //     date = new Date();
 // }
 
-
+let notes_list = getNotes('20220101');
+console.log(notes_list)
 
 let convertedToday = `${today.getFullYear()} ${today.getMonth()} ${today.getDate()}`;
 
@@ -61,25 +66,25 @@ function genKey(date) {
 
 
 // Function for loading notes from local storage
-function loadNotesObject() {
-    return JSON.parse(localStorage.getItem('notes'));
-}
+// function loadNotesObject() {
+//     return JSON.parse(localStorage.getItem('notes'));
+// }
 
 // Function for saving notes to local storage
-function saveNotesObject(notes) {
-    localStorage.setItem('notes', JSON.stringify(notes));
-}
+// function saveNotesObject(notes) {
+//     localStorage.setItem('notes', JSON.stringify(notes));
+// }
 
-// Function for checking that the note exists
-function checkNote(id) {
-    let notes = loadNotesObject();
-    return notes[id] ? true : false;
-}
+// // Function for checking that the note exists
+// function checkNote(id) {
+//     let notes = loadNotesObject();
+//     return notes[id] ? true : false;
+// }
 
-// Function for saving date to session storage
-function saveDate(date) {
-    sessionStorage.setItem('localDate', date);
-}
+// // Function for saving date to session storage
+// function saveDate(date) {
+//     sessionStorage.setItem('localDate', date);
+// }
 
 // =========================================================================================================
 
