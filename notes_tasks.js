@@ -39,7 +39,6 @@ class Notes {
         const sql = `DELETE FROM notes WHERE note_date = ? AND id = ?`
         return this.dao.run(sql, [note_date, id])
     }
-
 }
 
 module.exports = Notes;

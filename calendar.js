@@ -1,3 +1,5 @@
+// calendar.js
+
 "use strict"
 
 const firstDayOfMonth = 1;
@@ -24,19 +26,19 @@ let date; // Define global date variable
 let notes; // Define global notes variable
 
 /*Define notes object*/
-if (localStorage.getItem('notes')) {
-    notes = JSON.parse(localStorage.getItem('notes'));
-} else {
-    localStorage.setItem('notes', '{}');
-    notes = JSON.parse(localStorage.getItem('notes'));
-}
+// if (localStorage.getItem('notes')) {
+//     notes = JSON.parse(localStorage.getItem('notes'));
+// } else {
+//     localStorage.setItem('notes', '{}');
+//     notes = JSON.parse(localStorage.getItem('notes'));
+// }
 
 /*Define date object*/
-if (sessionStorage.getItem('localDate')) {
-    date = new Date(Date.parse(sessionStorage.getItem('localDate')));
-} else {
-    date = new Date();
-}
+// if (sessionStorage.getItem('localDate')) {
+//     date = new Date(Date.parse(sessionStorage.getItem('localDate')));
+// } else {
+//     date = new Date();
+// }
 
 
 
@@ -51,6 +53,12 @@ function genKey(date) {
     }
     
 }
+
+
+
+
+// ========================================= OLD localstorage way =========================================
+
 
 // Function for loading notes from local storage
 function loadNotesObject() {
@@ -72,6 +80,35 @@ function checkNote(id) {
 function saveDate(date) {
     sessionStorage.setItem('localDate', date);
 }
+
+// =========================================================================================================
+
+
+// ========================================= NEW RESTfull API way =========================================
+
+
+// Function for loading notes from local storage
+function loadNotesObject() {
+    return JSON.parse(localStorage.getItem('notes'));
+}
+
+// Function for saving notes to local storage
+function saveNotesObject(notes) {
+    localStorage.setItem('notes', JSON.stringify(notes));
+}
+
+// Function for checking that the note exists
+function checkNote(id) {
+    let notes = loadNotesObject();
+    return notes[id] ? true : false;
+}
+
+// Function for saving date to session storage
+function saveDate(date) {
+    sessionStorage.setItem('localDate', date);
+}
+
+// =========================================================================================================
 
 // Function for decrementing month value
 function minusMonth() {
@@ -155,9 +192,10 @@ function getParentByClass(element, className) {
 
 // Function for adding note
 function addNote(element) {
-    let notes = loadNotesObject();
+    // let notes = loadNotesObject();
     let noteText = document.getElementById('note-text').value;
     let cellId;
+
     if (getParentByClass(element, 'calendarDay')) {
         cellId = getParentByClass(element, 'calendarDay').id;
     } else if (getParentByClass(element, 'calendarChoosenDay')) {
